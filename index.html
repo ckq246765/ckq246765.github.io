@@ -208,6 +208,231 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Markdown基本语法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/07/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/">Markdown基本语法</a>
+    </h1>
+  
+
+        
+        <a href="/2021/03/07/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/" class="archive-article-date">
+  	<time datetime="2021-03-07T06:43:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<h1 id="标题"><a href="#标题" class="headerlink" title="标题"></a>标题</h1><p>设置标题只需要<code>#</code>+空格表示  </p>
+<h1 id="我是一级标题"><a href="#我是一级标题" class="headerlink" title="我是一级标题"></a>我是一级标题</h1><h2 id="我是二级标题"><a href="#我是二级标题" class="headerlink" title="我是二级标题"></a>我是二级标题</h2><h3 id="我是三级标题"><a href="#我是三级标题" class="headerlink" title="我是三级标题"></a>我是三级标题</h3><h4 id="我是四级标题"><a href="#我是四级标题" class="headerlink" title="我是四级标题"></a>我是四级标题</h4><h5 id="我是五级标题"><a href="#我是五级标题" class="headerlink" title="我是五级标题"></a>我是五级标题</h5><h6 id="我是六级标题"><a href="#我是六级标题" class="headerlink" title="我是六级标题"></a>我是六级标题</h6><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Markdownd段落"><a href="#Markdownd段落" class="headerlink" title="Markdownd段落"></a>Markdownd段落</h1><p>段落使用两个以上空格+enter<br>段落二   </p>
+<hr>
+<h1 id="字体"><a href="#字体" class="headerlink" title="字体"></a>字体</h1><p><em>斜体文字</em><br><em>斜体文字</em><br><strong>粗体文字</strong><br><strong>粗体文字</strong><br><strong><em>斜粗体文字</em></strong><br><strong><em>斜粗体文字</em></strong>  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*斜体文字*  </span><br><span class="line">_斜体文字_  </span><br><span class="line">**粗体文字**  </span><br><span class="line">__粗体文字__  </span><br><span class="line">***斜粗体文字***  </span><br><span class="line">___斜粗体文字___  </span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="分割线"><a href="#分割线" class="headerlink" title="分割线"></a>分割线</h1><hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">***</span><br><span class="line">* * *</span><br><span class="line">**************</span><br><span class="line">- - -</span><br><span class="line">-----------------------------</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="删除线"><a href="#删除线" class="headerlink" title="删除线"></a>删除线</h1><p>在文字的两端加上两个~~   </p>
+<p><del>我是删除线</del>  </p>
+<hr>
+<h1 id="下划线"><a href="#下划线" class="headerlink" title="下划线"></a>下划线</h1><p>使用HTML的标签<code>&lt;u&gt;&lt;/u&gt;</code>实现  </p>
+<p><u>我有下划线</u></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">u</span>&gt;</span>我有下划线<span class="tag">&lt;/<span class="name">u</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="脚注"><a href="#脚注" class="headerlink" title="脚注"></a>脚注</h1><p>脚注格式<a href="%E4%BD%A0%E8%AF%B4%E6%88%91%E6%98%AF%E8%B0%81">^要标注的文本</a>  </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">脚注格式[^要标注的文本]  </span><br><span class="line">[^要标注的文本]:你说我是谁</span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Markdowd列表"><a href="#Markdowd列表" class="headerlink" title="Markdowd列表"></a>Markdowd列表</h1><p>Markdown支持有序和无序列表<br>无序列表使用星号（<code>*</code>）、加号（<code>+</code>）、减号（<code>-</code>）作为标记，后面要添加空格</p>
+<ul>
+<li>第一</li>
+<li>第二</li>
+<li>第三</li>
+</ul>
+<ul>
+<li>我是一</li>
+<li>我是二</li>
+<li>我是三</li>
+</ul>
+<ul>
+<li>我是第一</li>
+<li>我是第二</li>
+<li>我是第三  </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">* 第一</span><br><span class="line">* 第二</span><br><span class="line">* 第三</span><br><span class="line"></span><br><span class="line">+ 我是一</span><br><span class="line">+ 我是二</span><br><span class="line">+ 我是三</span><br><span class="line"></span><br><span class="line">- 我是第一</span><br><span class="line">- 我是第二</span><br><span class="line">- 我是第三  </span><br></pre></td></tr></table></figure>
+<p>有序列表使用数字并加上<code>.</code>号来表示 ，后面+空格</p>
+<ol>
+<li> 我是第一</li>
+<li> 我是第二</li>
+<li> 我是第三  </li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>  我是第一</span><br><span class="line"><span class="number">2.</span>  我是第二</span><br><span class="line"><span class="number">3.</span>  我是第三  </span><br></pre></td></tr></table></figure>
+<p>列表嵌套</p>
+<ol>
+<li>我是第一项</li>
+</ol>
+<ul>
+<li>第一</li>
+<li>第二</li>
+</ul>
+<ol start="2">
+<li>我是第二项</li>
+</ol>
+<ul>
+<li>我是第一</li>
+<li>我是第二  </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> 我是第一项</span><br><span class="line">  - 第一</span><br><span class="line">  - 第二</span><br><span class="line"><span class="number">2.</span> 我是第二项</span><br><span class="line">  + 我是第一</span><br><span class="line">  + 我是第二  </span><br></pre></td></tr></table></figure>
+<hr>
+<h1 id="Markdown区块"><a href="#Markdown区块" class="headerlink" title="Markdown区块"></a>Markdown区块</h1><p>区块显示在开头使用<code>&gt;</code>符号，后面+空格</p>
+<blockquote>
+<p>区块应用  </p>
+</blockquote>
+<blockquote>
+<p>我是小白  </p>
+</blockquote>
+<blockquote>
+<p>我是菜鸟</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 区块应用  </span><br><span class="line">&gt; 我是小白  </span><br><span class="line">&gt; 我是菜鸟</span><br></pre></td></tr></table></figure>
+<p>区块嵌套，最外层使用一个<code>&gt;</code>符号，第一层使用<code>&gt;&gt;</code>符号，依次内推  </p>
+<blockquote>
+<p>我是最外层  </p>
+<blockquote>
+<p>我是第一层  </p>
+<blockquote>
+<p>我是第三层  </p>
+</blockquote>
+</blockquote>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; 我是最外层  </span><br><span class="line">&gt;&gt; 我是第一层  </span><br><span class="line">&gt;&gt;&gt; 我是第三层  </span><br></pre></td></tr></table></figure>
+<h1 id="区块中使用列表"><a href="#区块中使用列表" class="headerlink" title="区块中使用列表"></a>区块中使用列表</h1><blockquote>
+<p>区块中使用列表</p>
+<ol>
+<li>第一</li>
+<li>第二</li>
+</ol>
+<ul>
+<li>第一项</li>
+</ul>
+<ul>
+<li>第二项</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; 区块中使用列表</span><br><span class="line">&gt; <span class="number">1.</span> 第一</span><br><span class="line">&gt; <span class="number">2.</span> 第二</span><br><span class="line">&gt; - 第一项</span><br><span class="line">&gt; + 第二项</span><br></pre></td></tr></table></figure>
+<h1 id="列表中使用区块"><a href="#列表中使用区块" class="headerlink" title="列表中使用区块"></a>列表中使用区块</h1><ul>
+<li><p>我是第一项</p>
+<blockquote>
+<p>第一</p>
+<blockquote>
+<p>第二  </p>
+</blockquote>
+</blockquote>
+</li>
+<li><p>我是第二项</p>
+<blockquote>
+<p>第一</p>
+<blockquote>
+<p>第二</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">+ 我是第一项</span><br><span class="line">  &gt; 第一</span><br><span class="line">  &gt;&gt; 第二  </span><br><span class="line"></span><br><span class="line">+ 我是第二项</span><br><span class="line">  &gt; 第一</span><br><span class="line">  &gt;&gt; 第二</span><br><span class="line">~~~~</span><br><span class="line">---</span><br><span class="line"># Markdown代码</span><br><span class="line">段落上的一个函数或代码片段可以使用(\`)   </span><br><span class="line"></span><br><span class="line">我是一个函数`print(<span class="string">&quot;hello world&quot;</span>)`  </span><br><span class="line"></span><br><span class="line"># 代码区块</span><br><span class="line">四个空格或者是四个制表符`Tab`键  </span><br><span class="line"></span><br><span class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">          <span class="keyword">private</span> String test;</span><br><span class="line">          <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">        &#125;  </span><br><span class="line">还可以\`\`\`包裹一段代码  </span><br><span class="line">``` java</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> String test;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line">```</span><br><span class="line">---</span><br><span class="line"># Markdown链接</span><br><span class="line">链接的使用方法  </span><br><span class="line">[我的博客](https:<span class="comment">//ckq246765.github.io)</span></span><br><span class="line">或者</span><br><span class="line">&lt;https:<span class="comment">//ckq246765.github.io&gt;  </span></span><br><span class="line">```java</span><br><span class="line">[我的博客](https:<span class="comment">//ckq246765.github.io)</span></span><br><span class="line">或者</span><br><span class="line">&lt;https:<span class="comment">//ckq246765.github.io&gt;  </span></span><br><span class="line">```  </span><br><span class="line"># 高级链接</span><br><span class="line">通过变量来设置一个链接，变量赋值在文档末尾进行  </span><br><span class="line">链接作为网址变量[MyBlog][<span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span>]:https:<span class="comment">//ckq246765.github.io</span></span><br><span class="line">```java</span><br><span class="line">链接作为网址变量[MyBlog][<span class="number">1</span>]</span><br><span class="line">[<span class="number">1</span>]:https:<span class="comment">//ckq246765.github.io</span></span><br><span class="line">```  </span><br><span class="line"># Markdown图片</span><br><span class="line">使用`&lt;![]()`标注图片 `&lt;![图片未加载显示汉字](链接地址 <span class="string">&quot;图片title&quot;</span>)`   </span><br><span class="line">Markdown还没有办法指定图片的高度和宽度，如果需要可以使用`&lt;img src=&quot;&quot; width=&quot;&quot; height=&quot;&quot;&gt;&lt;/img&gt;`标签  </span><br><span class="line"></span><br><span class="line">![alt 属性文本](https:<span class="comment">//gagekeqi.oss-cn-beijing.aliyuncs.com/gagekeqiFavicon.jpg?versionId=CAEQDRiBgMDW_IyUvhciIDkxM2QxZjFmMTEyNjQ2YWRiNDRmOTg0ZDA5ZWIwZjQ0 &quot;我的大头&quot;)  </span></span><br><span class="line"></span><br><span class="line">我的头像[我的大头][myBlog]  </span><br><span class="line"></span><br><span class="line">[myBlog]:https:<span class="comment">//gagekeqi.oss-cn-beijing.aliyuncs.com/gagekeqiFavicon.jpg?versionId=CAEQDRiBgMDW_IyUvhciIDkxM2QxZjFmMTEyNjQ2YWRiNDRmOTg0ZDA5ZWIwZjQ0</span></span><br><span class="line"></span><br><span class="line">&lt;img src=<span class="string">&quot;https://gagekeqi.oss-cn-beijing.aliyuncs.com/gagekeqiFavicon.jpg?versionId=CAEQDRiBgMDW_IyUvhciIDkxM2QxZjFmMTEyNjQ2YWRiNDRmOTg0ZDA5ZWIwZjQ0&quot;</span> width=<span class="string">&quot;200&quot;</span> height=<span class="string">&quot;200&quot;</span>&gt;  </span><br><span class="line"></span><br><span class="line">~~~ java</span><br><span class="line">![alt 属性文本](https:<span class="comment">//gagekeqi.oss-cn-beijing.aliyuncs.com/gagekeqiFavicon.jpg?versionId=CAEQDRiBgMDW_IyUvhciIDkxM2QxZjFmMTEyNjQ2YWRiNDRmOTg0ZDA5ZWIwZjQ0 &quot;我的大头&quot;)  </span></span><br><span class="line"></span><br><span class="line">我的头像[我的大头][myBlog]  </span><br><span class="line">[myBlog]:https:<span class="comment">//gagekeqi.oss-cn-beijing.aliyuncs.com/gagekeqiFavicon.jpg?versionId=CAEQDRiBgMDW_IyUvhciIDkxM2QxZjFmMTEyNjQ2YWRiNDRmOTg0ZDA5ZWIwZjQ0</span></span><br><span class="line"></span><br><span class="line">&lt;img src=<span class="string">&quot;https://gagekeqi.oss-cn-beijing.aliyuncs.com/gagekeqiFavicon.jpg?versionId=CAEQDRiBgMDW_IyUvhciIDkxM2QxZjFmMTEyNjQ2YWRiNDRmOTg0ZDA5ZWIwZjQ0&quot;</span> width=<span class="string">&quot;200&quot;</span> height=<span class="string">&quot;200&quot;</span>&gt;  </span><br></pre></td></tr></table></figure>
+<h1 id="Markdown表格"><a href="#Markdown表格" class="headerlink" title="Markdown表格"></a>Markdown表格</h1><p>markdown制作表格使用<code>|</code>来分隔不同的列，使用<code>-</code>来分隔表头  </p>
+<table>
+<thead>
+<tr>
+<th>第一行第一列</th>
+<th>第一行第二列</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第二行第一列</td>
+<td>第二行第二列</td>
+</tr>
+</tbody></table>
+<p><strong>对齐方式:</strong>  </p>
+<ul>
+<li><code>-:</code>:设置内容和标题右对齐显示</li>
+<li><code>:-</code>:设置内容和标题左对齐显示</li>
+<li><code>:-:</code>:设置内容和标题居中显示  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">| 第一行第一列 | 第一行第二列 |  </span><br><span class="line">| ------------| ----------- |</span><br><span class="line">| 第二行第一列 | 第二行第二列 |</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Markdown</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/start//" class="article-tag-list-link color1">start</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/03/07/Markdown%E5%9F%BA%E6%9C%AC%E8%AF%AD%E6%B3%95/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -370,6 +595,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             <input type="checkbox" q-on="click:toggleTag(e)" q-attr="checked:showTags">
           </label>
           <ul class="article-tag-list" q-show="showTags">
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
             
             <div class="clearfix"></div>
           </ul>
