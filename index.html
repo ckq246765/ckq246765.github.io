@@ -208,6 +208,436 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-clickhouse" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/06/clickhouse/">clickhouse</a>
+    </h1>
+  
+
+        
+        <a href="/2021/04/06/clickhouse/" class="archive-article-date">
+  	<time datetime="2021-04-06T14:57:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-04-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="clickHouse学习笔记：-OLAP"><a href="#clickHouse学习笔记：-OLAP" class="headerlink" title="clickHouse学习笔记：(OLAP)"></a>clickHouse学习笔记：(OLAP)</h1><blockquote>
+<ul>
+<li>kylin</li>
+</ul>
+</blockquote>
+<ul>
+<li>impla -&gt; hive  </li>
+<li>preto<br>&lt;<img src="/2021/04/06/clickhouse/1.jpg" alt="图片消失了" title="OLAP">  </li>
+</ul>
+<blockquote>
+<ol>
+<li>ck 不适用HDFS存储数据  </li>
+<li>集成HDFS MYSQL</li>
+<li>MPP 架构，简单相互独立</li>
+<li>DBMS系统 数据库 表 SQL</li>
+<li>列式存储</li>
+<li>实现语言 C++,高效</li>
+<li>处理速度快</li>
+<li>横向扩展  高可用  </li>
+</ol>
+</blockquote>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ol>
+<li>安装curl工具  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">yum install -y curl</span><br><span class="line">测试：curl www.baidu.com</span><br><span class="line">&#96;&#96;&#96;    </span><br><span class="line">&#96;&#96;&#96; shell</span><br><span class="line">刷访问量：my.sh</span><br><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env bash</span><br><span class="line"> while [ true ]</span><br><span class="line"> do</span><br><span class="line">   #statements</span><br><span class="line">   curl http:&#x2F;&#x2F;myblog.com  </span><br><span class="line">   sleep 20</span><br><span class="line"> done</span><br></pre></td></tr></table></figure></li>
+<li>添加clickHouse 的 yum 镜像  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -s https://packagecloud.io/install/repositories/altinity/clickhouse/script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure></li>
+<li>检查镜像情况<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> yum镜像配置：</span></span><br><span class="line">./etc/yum.repos.d</span><br><span class="line"><span class="meta">#</span><span class="bash">有两个 clickhouse-server clickhouse-client</span></span><br><span class="line">yum list | grep clickhouse</span><br></pre></td></tr></table></figure></li>
+<li>安装 clickhouse 服务端和客户端<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y clickhouse-server clickhouse-client</span><br></pre></td></tr></table></figure></li>
+<li>启动服务 daunt<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service clickhouse-server start</span><br></pre></td></tr></table></figure></li>
+<li>启动客户端<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">clickhouse-client</span><br><span class="line"><span class="meta">#</span><span class="bash">支持多行SQL查询:</span></span><br><span class="line">clickhouse-client -m</span><br><span class="line"><span class="meta">#</span><span class="bash"> 支持查询</span></span><br><span class="line">clickhouse-client -query=&#x27;select * from tab_name&#x27;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 支持多行statement执行</span></span><br><span class="line">clickhouse-client -n -q &#x27;user db_name; select * form table_name&#x27;</span><br></pre></td></tr></table></figure>
+<h2 id="引擎"><a href="#引擎" class="headerlink" title="引擎"></a>引擎</h2><blockquote>
+<ul>
+<li>数据库引擎：</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>不同的引擎决定不同的数据库类型</li>
+<li>MySql</li>
+<li>lazy</li>
+<li>MaterializeMySQL</li>
+</ul>
+<ul>
+<li>表引擎(新建表时候必须要指定表引擎)：</li>
+</ul>
+<ul>
+<li>引擎决定数据的存储位置，数据存储格式，表特征，修改结构，并发操作</li>
+<li>ODBC</li>
+<li>JDBC</li>
+<li>Kafka</li>
+<li>HDFS</li>
+<li>MySql  </li>
+<li>……  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create database is not exists db_test;</span><br><span class="line">use db_test;</span><br><span class="line"><span class="function">create table <span class="title">tab_test</span><span class="params">(id Int32,name String,age UInt8)</span>engine</span>=Memory();</span><br></pre></td></tr></table></figure>
+<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><blockquote>
+<ul>
+<li>数值类型</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ol>
+<li>Int8 Int16 Int32 Int64</li>
+<li>UInt8 UInt16 UInt32 UInt64</li>
+<li>Float32(float) Float64(double)</li>
+<li>Decimal32(S) =&gt; (Decimal(1~9,S)) -1<em>10^(9-S) 到 1</em>10^(9-S)</li>
+<li>Decimal64(S) =&gt; (Decimal(10~18,S)) -1<em>10^(18-S) 到 1</em>10^(18-S)</li>
+<li>Decimal128(S) =&gt; (Decimal(19~38,S)) -1<em>10^(38-S) 到 1</em>10^(38-S)</li>
+</ol>
+<ul>
+<li>字符串类型</li>
+</ul>
+<ol>
+<li>String</li>
+<li>FiedString</li>
+<li></li>
+</ol>
+<ul>
+<li>数组类型(强数据类型)  </li>
+</ul>
+<ol>
+<li>array(T)</li>
+<li>[1,2,3]</li>
+<li>toTypeName()  查看数据类型</li>
+<li>arr[1]  索引下标从 1 开始</li>
+<li>arrayMap(e-&gt;concat(e,’abc’),arr)  拼接’abc’</li>
+<li>字符串的时候不能用””  只能用’’  </li>
+</ol>
+<ul>
+<li>Enum 枚举类型  <ol>
+<li>Enum8(‘name’=1,’age’=2)</li>
+<li>Enum16()</li>
+</ol>
+</li>
+<li>元组（下标从1开始）  </li>
+</ul>
+<ol>
+<li>Tuple(T1,T2,T3)</li>
+</ol>
+<ul>
+<li>Nullable(Int8)</li>
+</ul>
+<ol>
+<li>Array(Nullable(Int8))</li>
+</ol>
+<ul>
+<li>嵌套类型  </li>
+</ul>
+<ol>
+<li>Nested(id Int8, name String)</li>
+<li>其实底层表示为：长度一致的ia array(Int8),name array(String)</li>
+</ol>
+<ul>
+<li>域  </li>
+</ul>
+<ol>
+<li>Ipv4 ip格式数据，插入数据时验证</li>
+<li>Ipv6  </li>
+</ol>
+<ul>
+<li>Decimal</li>
+</ul>
+<ol>
+<li>Decimal32(S) - ( -1 * 10^(9 - S),1*10^(9-S) )</li>
+<li>Decimal64(S) - ( -1 * 10^(18 - S),1*10^(18-S) )</li>
+<li>Decimal128(S) - ( -1 * 10^(38 - S),1*10^(38-S) )</li>
+</ol>
+<h2 id="clickhouse语法："><a href="#clickhouse语法：" class="headerlink" title="clickhouse语法："></a>clickhouse语法：</h2><ul>
+<li>数据库引擎：<blockquote>
+<ul>
+<li>Ordinary:默认存储引擎</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>MaterializeMySQL: 同步MySQL的数据，自动拉取远端Mysql的数据，创建myswl引擎的数据库表</li>
+<li>Memory：内存引擎，存放零时数据，服务重启，数据消失</li>
+<li>Dictionary:字典引擎，自动为所有数据字典创建他们的数据表</li>
+<li>Lazy: 日志引擎，数据库只能使用Log表引擎  </li>
+<li>Mysql: 可以在mysql中crud,在ck中同步更新；在ck中可以查询和插入；ck不能删除表；ck不能创建表；ck不能删除更新数据；<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> DATABASE [IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span>] DB_NAME [<span class="keyword">ON</span> CLUSTER cluster]</span><br><span class="line">ENGINE <span class="operator">=</span> MYSQL(<span class="string">&#x27;host:port&#x27;</span>,[<span class="string">&#x27;database&#x27;</span> <span class="operator">|</span> database],<span class="string">&#x27;user&#x27;</span>,password);</span><br><span class="line"><span class="keyword">CREATE</span> DATABASE DB_TEST ENGINE<span class="operator">=</span>Memory();</span><br><span class="line"><span class="keyword">SHOW</span> databases;</span><br><span class="line">use DB_TEST;</span><br><span class="line"><span class="keyword">select</span> currentDatabases();</span><br><span class="line"><span class="keyword">SHOW</span> tables;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">table</span> tab_test(id Int8)engine<span class="operator">=</span>Memory;</span><br><span class="line"><span class="keyword">desc</span> tab_name;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li>表引擎<blockquote>
+<ul>
+<li>MergeTree:</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>Log：日志，适合数据少，测试使用，属于本地表，本地存储数据<ol>
+<li>var/lib/clickhouse/data/…</li>
+<li>分数据块，可以多线程处理</li>
+</ol>
+</li>
+<li>TinyLog:   <ol>
+<li>*.bin：每个字段的压缩数据，数据插入时，追加写数据</li>
+<li>sizes.json：每个字段文件的大小</li>
+<li>.mrk：数据块标记 MarkRange</li>
+<li>index：索引文件</li>
+<li>没有数据库块，不能并行，不能同时读写（不能并发；即不分数据块），没有索引</li>
+</ol>
+</li>
+<li>StripeLog:</li>
+<li>……<h3 id="建表语句："><a href="#建表语句：" class="headerlink" title="建表语句："></a>建表语句：</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> #方式一：</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">table</span> [if <span class="keyword">not</span> <span class="keyword">exists</span>] [db_name.]table_name (</span><br><span class="line">    name1 [type] [<span class="keyword">default</span><span class="operator">|</span>materialized<span class="operator">|</span>alias expr],</span><br><span class="line">    name2 [type] [<span class="keyword">default</span><span class="operator">|</span>materialized<span class="operator">|</span>alias expr],</span><br><span class="line">    ......</span><br><span class="line">)ENGINE<span class="operator">=</span>engine;</span><br><span class="line">#方式二：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> new_tab_name <span class="keyword">as</span> old_tab_name;</span><br><span class="line">#方式三：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> [if <span class="keyword">not</span> <span class="keyword">exists</span>]  [db_name.]table_name ENGINE<span class="operator">=</span>engine <span class="keyword">as</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> old_tab_name;</span><br><span class="line">#删除表：</span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> [if existst]  [db_name.]table_name ;</span><br><span class="line">#创建临时表：级别高于普通表（即相同的表名，会优先使用临时表），不属于任何数据库，不需要指定引擎；会话断开后会删除表，不会持久化；</span><br><span class="line"><span class="keyword">create</span> temporary <span class="keyword">table</span> tab_name(</span><br><span class="line">    name1 [type] [<span class="keyword">default</span><span class="operator">|</span>materialized<span class="operator">|</span>alias expr],</span><br><span class="line">    name2 [type] [<span class="keyword">default</span><span class="operator">|</span>materialized<span class="operator">|</span>alias expr],</span><br><span class="line">    ......</span><br><span class="line">);</span><br><span class="line"> ```  </span><br><span class="line"> ### 视图：</span><br><span class="line"><span class="operator">&gt;</span> <span class="operator">-</span> 普通视图：只是一层简单的查询代理  </span><br><span class="line">    <span class="number">1.</span> 不会存储数据，也不会提高效率，不能持久化，没有表结构</span><br><span class="line"> <span class="operator">-</span> 物化视图：拥有独立的存储</span><br><span class="line">    <span class="number">1.</span> 存在表结构，需要引擎，可以持久化</span><br><span class="line">    <span class="number">2.</span> 实时监控表的数据变化，更新其数据</span><br><span class="line">    <span class="number">3.</span> 表结构和映射的表机构一致</span><br><span class="line">    ``` <span class="keyword">SQL</span></span><br><span class="line">      <span class="keyword">create</span> materialized <span class="keyword">view</span> view_name ENGINE<span class="operator">=</span>engine [populate] <span class="keyword">as</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> source_tab_name;</span><br><span class="line">      # populate:实时同步数据</span><br></pre></td></tr></table></figure>
+<h3 id="分区表（合并树引擎才支持：MergeTree）"><a href="#分区表（合并树引擎才支持：MergeTree）" class="headerlink" title="分区表（合并树引擎才支持：MergeTree）"></a>分区表（合并树引擎才支持：MergeTree）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> [if <span class="keyword">not</span> <span class="keyword">exists</span>] [db_name.]table_name (</span><br><span class="line">  name1 [type] [<span class="keyword">default</span><span class="operator">|</span>materialized<span class="operator">|</span>alias expr],</span><br><span class="line">  name2 [type] [<span class="keyword">default</span><span class="operator">|</span>materialized<span class="operator">|</span>alias expr],</span><br><span class="line">  ......</span><br><span class="line">)ENGINE<span class="operator">=</span>engine</span><br><span class="line"><span class="keyword">partition</span> <span class="keyword">by</span> name1</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> name1</span><br><span class="line"><span class="keyword">primary</span> key name1;</span><br><span class="line"># <span class="keyword">partition</span> <span class="keyword">by</span> toYYYYMM(time_col) 表示：更具年月分区</span><br><span class="line"># <span class="keyword">primary</span> key name1; 注意并不是唯一的</span><br><span class="line"></span><br><span class="line">#手动合并分区：执行一次只能合并一个分区</span><br><span class="line">OPTIMIZE <span class="keyword">TABLE</span> tb_partition;</span><br></pre></td></tr></table></figure>
+<h3 id="DDL语句（仅支持表引擎：-MergeTree-Merge-Distributed）"><a href="#DDL语句（仅支持表引擎：-MergeTree-Merge-Distributed）" class="headerlink" title="DDL语句（仅支持表引擎： MergeTree Merge Distributed）"></a>DDL语句（仅支持表引擎： MergeTree Merge Distributed）</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#添加字段：</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name <span class="keyword">add</span> <span class="keyword">column</span> col_name type;</span><br><span class="line">#删除字段</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name <span class="keyword">drop</span> <span class="keyword">column</span> col_name;</span><br><span class="line">#修改字段类型(不能修改主键和排序字段)</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name modify <span class="keyword">column</span>[if <span class="keyword">exists</span>] name [type][<span class="keyword">default</span> expr];</span><br><span class="line">#修改字段注释</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name comment <span class="keyword">column</span> col_name <span class="string">&#x27;注释&#x27;</span>;</span><br><span class="line">#移动表：</span><br><span class="line">rename <span class="keyword">table</span> [db_name1.]tb_name11 <span class="keyword">to</span> [db_name2.]tb_name12,[db_name1.]tb_name21 <span class="keyword">to</span> [db_name2.]tb_name22,.....</span><br><span class="line">rename <span class="keyword">table</span> t1 <span class="keyword">to</span> new_db.t1; <span class="comment">--将当前数据库表移动到另一个数据库中</span></span><br><span class="line"><span class="keyword">show</span> tables <span class="keyword">from</span> new_db; <span class="comment">--查看指定数据库中表</span></span><br><span class="line">rename <span class="keyword">table</span> t2 <span class="keyword">to</span> new_db.t_2; <span class="comment">--移动表并且修改表的名称</span></span><br></pre></td></tr></table></figure>
+<h3 id="TTL语句（设置超时时间自动删除）"><a href="#TTL语句（设置超时时间自动删除）" class="headerlink" title="TTL语句（设置超时时间自动删除）"></a>TTL语句（设置超时时间自动删除）</h3></li>
+</ul>
+<ul>
+<li>列：当列的时间超过设置的值时，一整列的数据会被删除</li>
+<li>表：当表中的某一行的时间超过设置的值时，整行会被删除</li>
+</ul>
+<h3 id="分区表DDL"><a href="#分区表DDL" class="headerlink" title="分区表DDL"></a>分区表DDL</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> #创建分区表：</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> if <span class="keyword">not</span> <span class="keyword">exists</span> par_tab_test (</span><br><span class="line">  id UInt32,</span><br><span class="line">  name String</span><br><span class="line">)ENGINE<span class="operator">=</span>MergeTree()</span><br><span class="line"><span class="keyword">partition</span> <span class="keyword">by</span> name</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> id;</span><br><span class="line">#查看分区：</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span>,<span class="keyword">table</span>,<span class="keyword">partition</span> <span class="keyword">from</span> system.parts <span class="keyword">where</span> <span class="keyword">table</span><span class="operator">=</span><span class="string">&#x27;par_tab_test&#x27;</span>;</span><br><span class="line">#删除分区：</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> par_tab_test <span class="keyword">drop</span> <span class="keyword">partition</span> <span class="string">&#x27;partition_name&#x27;</span>;</span><br><span class="line">#复制分区数据：</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> par_tab_test replace <span class="keyword">partition</span> partition_name <span class="keyword">from</span> source_par_tab_name;</span><br><span class="line">#重置分区中某个字段的数据：(不能重置主键和分区字段):</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tb_name clear <span class="keyword">column</span> col_name <span class="keyword">in</span> <span class="keyword">partition</span> partition_name;</span><br><span class="line">#卸载分区(放到detached中):</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name detach <span class="keyword">partition</span> partition_name;</span><br><span class="line">#装载分区:</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name attach <span class="keyword">partition</span> partition_name;</span><br></pre></td></tr></table></figure>
+<h3 id="DML语句"><a href="#DML语句" class="headerlink" title="DML语句"></a>DML语句</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#插入数据：</span><br><span class="line"><span class="number">1.</span> <span class="keyword">insert</span> <span class="keyword">into</span> tab_name (col) <span class="keyword">values</span>(v1);</span><br><span class="line"><span class="number">2.</span> <span class="keyword">insert</span> <span class="keyword">into</span> tab_name <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> source_tab_name;</span><br><span class="line"><span class="number">3.</span> <span class="keyword">create</span> <span class="keyword">table</span> .... <span class="keyword">as</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> source_tab_name;</span><br><span class="line"><span class="number">4.</span> clickhouse<span class="operator">-</span>client <span class="operator">-</span>q <span class="string">&#x27;insert into table_name FORMAT CSV&#x27;</span> <span class="operator">&lt;</span> .<span class="operator">/</span>data.csv</span><br><span class="line"><span class="number">4.</span>  clickhouse<span class="operator">-</span>client <span class="comment">--format_csv_delimiter=&#x27;|&#x27; -q &#x27;insert into table_name FORMAT CSV&#x27; &lt; ./data.csv</span></span><br><span class="line"><span class="number">4.</span> cat .<span class="operator">/</span>data.csv <span class="operator">|</span> <span class="operator">-</span>q <span class="string">&#x27;insert into table_name FORMAT CSV&#x27;</span> <span class="operator">&lt;</span> .<span class="operator">/</span>data.csv</span><br><span class="line">#删除数据：(MergeTree)</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name <span class="keyword">delete</span> <span class="keyword">where</span> col<span class="operator">=</span><span class="string">&#x27;&#x27;</span>;</span><br><span class="line">#更新数据：(MergeTree)</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> tab_name update col<span class="operator">=</span><span class="string">&#x27;&#x27;</span> <span class="keyword">where</span> col<span class="operator">=</span><span class="string">&#x27;&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<h2 id="表引擎"><a href="#表引擎" class="headerlink" title="表引擎"></a>表引擎</h2><ul>
+<li>Log()</li>
+<li>MergeTree():（只有该引擎可以支持表结构修改，支持分区表）<ol>
+<li>*.bin：各字段二进制压缩数据</li>
+<li>*.mark:标记对应的 *.bin的数据(块)偏移量</li>
+<li>primary.inx 主键索引（稀疏索引）</li>
+<li>checksums.txt 校验文件，校验数据的正确性和完整性</li>
+<li>columns.txt 当前所有字段，每个分区都有</li>
+<li>count.txt 当前分区中所有数据的行数</li>
+<li>partition.dat  min_max_*.inx  分区信息和分区中最小和最大数据（范围）<blockquote>
+<ul>
+<li>支持并发</li>
+<li>支持索引</li>
+<li>支持分区</li>
+<li>支持mutation</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<ul>
+<li>分区规则：</li>
+</ul>
+<ol>
+<li>partition by()</li>
+<li>partition by(toYYYYMM())</li>
+<li>partition by(length())</li>
+</ol>
+</li>
+<li>ReplacingMergeTree():会删除具有相同（区内）主键的重复项，数据的去重只会在合并的过程中出现<ol>
+<li>Replacing MergeTree([ver_col]):保留指定数据的版本</li>
+</ol>
+</li>
+<li>CollapsingMergeTree([sign]):相同分区折叠，删除或更新分区内数据<ul>
+<li>，表中的数据按照排序字段升序排序，合并时，排序相同的数据会被剔除：然后，在更具sign做折叠</li>
+</ul>
+<ol>
+<li>sign:1 属于标记 -1 表示折叠</li>
+<li>1 -1 1 更新</li>
+<li>1 -1 删除</li>
+<li>-1 1 1 不操作</li>
+<li>1 1 -1 1 折叠会删除中间的两个数据</li>
+</ol>
+</li>
+<li>VersionCollapsingMergeTree([sign],[version]):如果排序字段一样，更具version字段折叠数据</li>
+<li>SummingMergeTree([column])：根据排序主键字段，指定column字段求和，插入数据会实现聚合操作，分区决定了聚合范围</li>
+<li>AggregatingMergeTree()：聚合引擎</li>
+</ul>
+<ol>
+<li>money AggregateFunction(sum,Int32)：建表,  sumState(money)：插入|查询</li>
+<li>name AggregateFunction(uniq,Int32)：建表,  uniqState(name)：插入|查询<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"> #明细表</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">table</span> tab_name(</span><br><span class="line"> id Int32,</span><br><span class="line">  city String,</span><br><span class="line">  money <span class="type">Int</span>,</span><br><span class="line">  name String</span><br><span class="line">)ENGINE<span class="operator">=</span>MergeTree()</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> id;</span><br><span class="line"> #聚合表</span><br><span class="line"> <span class="keyword">create</span> <span class="keyword">table</span> tab_name(</span><br><span class="line"> id Int32,</span><br><span class="line">  city String,</span><br><span class="line">  money AggregateFunction(sum,Int32),</span><br><span class="line">  name AggregateFunction(uniq,String)</span><br><span class="line">)ENGINE<span class="operator">=</span>AggregatingMergeTree()</span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> id;</span><br><span class="line"> #分组查询插入聚合表：</span><br><span class="line"> <span class="keyword">insert</span> <span class="keyword">into</span> tab_name</span><br><span class="line"> <span class="keyword">select</span> city ,uniqState(name),sumState(money) <span class="keyword">from</span> tab_name <span class="keyword">group</span> <span class="keyword">by</span> city;</span><br><span class="line"> #聚合表：修改为 物化视图</span><br><span class="line"> #可以实现，在对明细表插入数据时 population <span class="operator">|</span>或者合并时，做聚合</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li>HDFS:HDFS(path,format):加载hdfs存储的数据，ck中不存储数据，读取处理数据，处理分析<ul>
+<li>path,format：path：文件路径   format：文件数据格式</li>
+<li>如果是指定单个文件路径时，在文件不存在允许 insert into 表数据一次，且会创建该文件</li>
+</ul>
+<ol>
+<li>单个文件路径</li>
+<li>多个文件路径</li>
+<li>文件范围</li>
+</ol>
+</li>
+<li>MYSQL：MySQL(‘host:port’,’database’,’table’,’user’,’password’);<ul>
+<li>不存储数据，操作的数据，只存储在mysql的表中</li>
+<li>可以插入和查询数据（且实时同步mysql表的数据），不支持更新和删除</li>
+<li>可以建立物化视图，同步mysql的数据：简单做一个分布式的查询</li>
+</ul>
+<ol>
+<li>mysql创建表</li>
+<li>ck创建表：指定NYSQL引擎</li>
+<li>建立物化视图，指定ck表的数据；</li>
+</ol>
+</li>
+<li>FILE：读取本地文件的数据<ul>
+<li>File(CSV)</li>
+<li>默认是会去加载该表路径下的 data.csv 文件</li>
+<li>可以向表插入数据（必须对该文件有写权限）</li>
+<li>挂载本地数据表：1.创建对应表路径文件 2. 创建表</li>
+</ul>
+</li>
+<li>JDBC</li>
+<li>KAFKA</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/04/06/clickhouse/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-git将本地项目关联到远程仓库" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/10/git%E5%B0%86%E6%9C%AC%E5%9C%B0%E9%A1%B9%E7%9B%AE%E5%85%B3%E8%81%94%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93/">git将本地项目关联到远程仓库</a>
+    </h1>
+  
+
+        
+        <a href="/2021/03/10/git%E5%B0%86%E6%9C%AC%E5%9C%B0%E9%A1%B9%E7%9B%AE%E5%85%B3%E8%81%94%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93/" class="archive-article-date">
+  	<time datetime="2021-03-10T14:31:44.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-10</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="git将本地项目关联到远程仓库"><a href="#git将本地项目关联到远程仓库" class="headerlink" title="git将本地项目关联到远程仓库"></a>git将本地项目关联到远程仓库</h1><h2 id="本地项目根目录执行"><a href="#本地项目根目录执行" class="headerlink" title="本地项目根目录执行"></a>本地项目根目录执行</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">  git init  </span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">## 关联到远程仓库</span><br><span class="line">``` java</span><br><span class="line">  git remote add origin url  </span><br><span class="line">```  </span><br><span class="line"></span><br><span class="line">## 提交</span><br><span class="line">``` java</span><br><span class="line">  git add .</span><br><span class="line">  git commit -m <span class="string">&quot;提交&quot;</span></span><br><span class="line">  git push -u origin master</span><br></pre></td></tr></table></figure>
+<h1 id="git拉取及提交"><a href="#git拉取及提交" class="headerlink" title="git拉取及提交"></a>git拉取及提交</h1><ol start="0">
+<li><p>我们切换分支时候，两个分支项目会不统一，（例如：当前在主分支，子分支项目未同步完全主分支项目，此时由主切子分支就会报如下错误）当前分支有未跟踪的文件，checkout 命令会覆盖它们，此时报错<br><img src="/2021/03/10/git%E5%B0%86%E6%9C%AC%E5%9C%B0%E9%A1%B9%E7%9B%AE%E5%85%B3%E8%81%94%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93/error.png" alt="图片消失了"><br>如果问价很重要，放到暂存区<br>git add .<br>git stash<br>切换分支之后<br>git stash pop   </p>
+</li>
+<li><p>拉取主干项目<br>git clone url<br>拉取用户名和密码的项目<br>git clone <a target="_blank" rel="noopener" href="http://username:password@remote/">http://username:password@remote</a>   </p>
+</li>
+<li><p>拉取分支项目（例如 develop分支项目）<br>git clone -b develop url   </p>
+</li>
+<li><p>新建分支<br>git branch 分支名称    </p>
+</li>
+<li><p>查看所有分支<br>git branch -a   </p>
+</li>
+<li><p>切换到某一分支<br>git checkout 分支名称    </p>
+</li>
+<li><p>添加修改代码到缓存<br>git add .   </p>
+</li>
+<li><p>添加提交代码备注<br>git commit -m “备注”   </p>
+</li>
+<li><p>提交到指定分支<br>git push origin 分支名称   </p>
+</li>
+<li><p>远程代码不需要，覆盖远程代码<br>git push origin master -f   </p>
+</li>
+<li><p>git pull :命令用于从另一个存储库或本地分支获取并集成(整合).作用:取回远程主机某个分支的更新,再与本地的指定分支合并<br>使用语法:<br>git pull [options][<reposit>][<refspec>..]<br>git fetch: 相当于是从远程获取最新版本到本地，不会自动合并   </p>
+</li>
+<li><p>将本地分支连接到远程分支<br>git remote add origin url  </p>
+</li>
+</ol>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">git</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/start//" class="article-tag-list-link color1">start</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/03/10/git%E5%B0%86%E6%9C%AC%E5%9C%B0%E9%A1%B9%E7%9B%AE%E5%85%B3%E8%81%94%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Markdown基本语法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -620,6 +1050,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Markdown</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">git</a>
               </li>
             
             <div class="clearfix"></div>
